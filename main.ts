@@ -1,4 +1,4 @@
-function zeichne_kurve () {
+function Draw_Curve () {
     x = 0
     y = 0
     t = 0
@@ -6,13 +6,13 @@ function zeichne_kurve () {
         x = Math.round(3 * Math.sin(a * t)) + 3
         y = 7 - (Math.round(3 * Math.sin(b * t - delta_fix - delta_var)) + 3)
         callimatrix.SetMatrixColorbright(0x0000ff, x, y, cbrightness.hp1)
-        t = t + schritt_kurve
+        t = t + number_curve
     }
 }
 let t = 0
 let y = 0
 let x = 0
-let schritt_kurve = 0
+let number_curve = 0
 let delta_var = 0
 let delta_fix = 0
 let b = 0
@@ -26,17 +26,17 @@ b = 1
 delta_fix = 0
 delta_var = 0
 let animation = true
-let anzahl_punkte = 26
-let anzahl_frames = 12
-schritt_kurve = pi * 2 / anzahl_punkte
-let schritt_animation = pi * 2 / Math.min(a, b) / anzahl_frames
-let verzoegerung = 500 / anzahl_frames
+let number_points = 26
+let number_frames = 12
+number_curve = pi * 2 / number_points
+let number_animation = pi * 2 / Math.min(a, b) / number_frames
+let delay = 500 / number_frames
 basic.forever(function () {
-    zeichne_kurve()
+    Draw_Curve()
     callimatrix.callimatrix_show()
     if (animation) {
         basic.pause(20)
         callimatrix.callimatrix_del()
-        delta_var = delta_var + schritt_animation
+        delta_var = delta_var + number_animation
     }
 })
