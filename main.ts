@@ -1,4 +1,5 @@
-function zeichne_kurve () {
+function zeichne_kurve() {
+    
     x = 0
     y = 0
     t = 0
@@ -9,6 +10,7 @@ function zeichne_kurve () {
         t = t + schritt_kurve
     }
 }
+
 let t = 0
 let y = 0
 let x = 0
@@ -31,7 +33,8 @@ let anzahl_frames = 12
 schritt_kurve = pi * 2 / anzahl_punkte
 let schritt_animation = pi * 2 / Math.min(a, b) / anzahl_frames
 let verzoegerung = 500 / anzahl_frames
-basic.forever(function () {
+basic.forever(function on_forever() {
+    
     zeichne_kurve()
     callimatrix.callimatrix_show()
     if (animation) {
@@ -39,4 +42,5 @@ basic.forever(function () {
         callimatrix.callimatrix_del()
         delta_var = delta_var + schritt_animation
     }
+    
 })

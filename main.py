@@ -1,42 +1,33 @@
-def zeichne_kurve():
-    global x, y, t
-    x = 0
-    y = 0
-    t = 0
-    while t < pi * 2:
-        x = Math.round(3 * Math.sin(a * t)) + 3
-        y = 7 - (Math.round(3 * Math.sin(b * t - delta_fix - delta_var)) + 3)
-        callimatrix.set_matrix_colorbright(0x0000ff, x, y, cbrightness.HP1)
-        t = t + schritt_kurve
-t = 0
-y = 0
-x = 0
-schritt_kurve = 0
-delta_var = 0
-delta_fix = 0
-b = 0
-a = 0
-pi = 0
-callimatrix.init_neo_matrix(DigitalPin.P1)
-einzelschritt = False
-pi = 3.1415926
-a = 1
-b = 1
-delta_fix = 0
-delta_var = 0
-animation = True
-anzahl_punkte = 26
-anzahl_frames = 12
-schritt_kurve = pi * 2 / anzahl_punkte
-schritt_animation = pi * 2 / min(a, b) / anzahl_frames
-verzoegerung = 500 / anzahl_frames
+a  =  1   # frequency horizontal
+b  =  2   # vertical frequency (interesting pairs a / b are e.g .: 1/1, 1/2, 1/3, 2/3)
+delta_fix  =  0   # fixed phase shift (in radians, e.g .: Math.PI / 2)
+delta_var  =  0   # auxiliary variable for variable phase shift (animation)
+animation  =  True    # variable phase shift on / off
+single_step  =  False   # 100 ms pause after each calculated point
+number_points  =  26   # Number of calculated points per curve
+number_frames  =  8   # Number of calculated curves in the animation
+step_curve  =  Math . PI  *  2  /  number_points   # Sin has a period of 2 * Pi
+step_animation  =  Math . PI  *  2  /  min ( a ,  b )  /  number_frames   # Cycle repeats itself at 2 * Pi / min (a, b)
+delay  =  4000  /  number_frames   # approx. 4 seconds total animation duration (without single step)
 
-def on_forever():
-    global delta_var
-    zeichne_kurve()
-    callimatrix.callimatrix_show()
-    if animation:
-        basic.pause(20)
-        callimatrix.callimatrix_del()
-        delta_var = delta_var + schritt_animation
-basic.forever(on_forever)
+def  draw_curve ():
+    x  =  0   # screen x-coord. point to be drawn
+    y  =  0   # screen y-coord. point to be drawn
+    t  =  0   # time
+    while  t  <  Math . PI  *  2 :   # for the complete curve:
+        x  =  math.round ( 2  *  Math . sin ( a  *  t ))  +  2   # x-coord. to calculate
+        y  =  4  -  ( Math . round ( 2  *  Math . sin ( b  *  t  -  delta_fix  -  delta_var ))  +  2 )   # Calculate y-coordinate
+        led . plot ( x ,  y )   # draw pixel
+        if  single_step :   # in single step mode :
+            basic . pause ( 100 )   # 100 ms pause after each calculated point
+        t  +=  step_curve   # look at the next point on the curve
+
+def  on_forever ():
+    global  delta_var   # we access the variable phase shift in writing
+    draw_curve ()   # draw curve with current parameters
+    if  animation :   # with animation switched on:
+        basic . pause ( delay )   # wait after each frame
+        basic.clear_screen()   # clear screen
+        delta_var  +=  step_animation   # next animation step
+
+basic . forever ( on_forever )
